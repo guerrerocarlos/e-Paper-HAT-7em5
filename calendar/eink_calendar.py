@@ -126,8 +126,8 @@ def refreshScreen():
   # # Font: https://github.com/byrongibson/fonts/blob/master/truetype/wqy/wqy-microhei.ttc
 
   font = ImageFont.truetype(curr_dir + 'font.ttc', 18)
-  fontSmall = ImageFont.truetype(curr_dir + 'font.ttc', 13)
-  fontTiny = ImageFont.truetype(curr_dir + 'font.ttc', 10)
+  fontSmall = ImageFont.truetype(curr_dir + 'font.ttc', 14)
+  fontTiny = ImageFont.truetype(curr_dir + 'font.ttc', 11)
   # fontBig = ImageFont.truetype('font.ttc', 30)
   # fontMed = ImageFont.truetype('font.ttc', 20)
   # fontMedSmall = ImageFont.truetype('font.ttc', 18)
@@ -238,21 +238,21 @@ def refreshScreen():
   print(today - timedelta(days = (todayWeekday)))
 
   showWeeks = 6
-  vSpan = screenHeight / showWeeks / 8 * 7
+  vSpan = screenHeight / showWeeks / 7 * 7
   hSpan = screenWidth / 7
 
   lines = []
 
   # Top Square
-  drawRed.rectangle((
-    0,
-    0, 
-    screenWidth, 
-    vSpan - 20), 
-    fill = 0,
-    outline = 0) 
+  # drawRed.rectangle((
+  #   0,
+  #   0, 
+  #   screenWidth, 
+  #   vSpan - 20), 
+  #   fill = 0,
+  #   outline = 0) 
 
-  drawRed.text((5,-1), today.strftime("%A, %d %B %Y"), font = ImageFont.truetype(curr_dir + 'font.ttc', 40), fill = 255, align = "left")
+  # drawRed.text((5,-1), today.strftime("%A, %d %B %Y"), font = ImageFont.truetype(curr_dir + 'font.ttc', 40), fill = 255, align = "left")
 
   for dayCount in range(0, 7 * showWeeks):
     drawDay = today + timedelta(days = (+ dayCount - (today.day + firstDayOfMonth.weekday() + 1)))
@@ -264,7 +264,7 @@ def refreshScreen():
           # print(event, processedEvents[eventDate])
           # print(eventDate, processedEvents[eventDate]['summary'].encode('utf-8'))
           print(processedEvents[eventDate]['summary'])
-          lines.append((eventDate[11:13] + " "+processedEvents[eventDate]['summary']))
+          lines.append((eventDate[11:16] + " "+processedEvents[eventDate]['summary']))
     lines.sort()
 
     # drawRed.text((30 * dayCount,20), today.strftime("%A"), font = ImageFont.truetype(curr_dir + 'font.ttc', 40), fill = 0, align = "left")
@@ -280,62 +280,62 @@ def refreshScreen():
     if drawDay.month == today.month: 
       draw.rectangle((
         (dayCount % 7) * hSpan, 
-        math.floor(dayCount / 7) * vSpan + vSpan, 
+        math.floor(dayCount / 7) * vSpan, 
         # (dayCount % 7) * hSpan + hSpan + (4 if dayCount % 7 == 6 else 0) , 
         (dayCount % 7) * hSpan + hSpan, 
-        math.floor(dayCount / 7) * vSpan + vSpan + vSpan), 
+        math.floor(dayCount / 7) * vSpan + vSpan), 
         fill = 255,
         outline = 0)   
 
       for l in range(0, len(lines)):
-        drawRed.text(((dayCount % 7) * hSpan + 3, vSpan + vSpan * math.floor(dayCount / 7) + 20 + l * 10), lines[l], font = fontTiny, fill = (0 if drawDay.day == today.day else 255), align = "left")
+        drawRed.text(((dayCount % 7) * hSpan + 3,  vSpan * math.floor(dayCount / 7) + 20 + l * 10), lines[l], font = fontTiny, fill = (0 if drawDay.day == today.day else 255), align = "left")
 
       for l in range(0, len(lines)):
-        draw.text(((dayCount % 7) * hSpan + 3, vSpan + vSpan * math.floor(dayCount / 7) + 20 + l * 10), lines[l], font = fontTiny, fill = (0 if not drawDay.day == today.day else 255), align = "left")
+        draw.text(((dayCount % 7) * hSpan + 3,  vSpan * math.floor(dayCount / 7) + 20 + l * 10), lines[l], font = fontTiny, fill = (0 if not drawDay.day == today.day else 255), align = "left")
 
       if(drawDay.day == today.day):   
         drawRed.rectangle((
           (dayCount % 7) * hSpan, 
-          math.floor(dayCount / 7) * vSpan + vSpan, 
+          math.floor(dayCount / 7) * vSpan , 
           (dayCount % 7) * hSpan + hSpan , 
-          math.floor(dayCount / 7) * vSpan + vSpan + vSpan), 
+          math.floor(dayCount / 7) * vSpan + vSpan), 
           fill = 0,
           outline = 0)  
 
         for l in range(0, len(lines)):
-          drawRed.text(((dayCount % 7) * hSpan + 3, vSpan + vSpan * math.floor(dayCount / 7) + 20 + l * 10), lines[l], font = fontTiny, fill = (0 if not drawDay.day == today.day else 255), align = "left")
+          drawRed.text(((dayCount % 7) * hSpan + 3, vSpan * math.floor(dayCount / 7) + 20 + l * 10), lines[l], font = fontTiny, fill = (0 if not drawDay.day == today.day else 255), align = "left")
 
-        draw.rectangle(
-          (0,
-          vSpan - 20, 
-          screenWidth, 
-          vSpan), 
-          fill = 0,
-          outline = 0) 
+        # draw.rectangle(
+        #   (0,
+        #   vSpan - 20, 
+        #   screenWidth, 
+        #   vSpan), 
+        #   fill = 0,
+        #   outline = 0) 
 
-        draw.text(
-            (3,
-            vSpan - 20), 
-          " | ".join(lines), 
-          # "DAY", 
-          font = ImageFont.truetype(curr_dir + 'font.ttc', 16), 
-          fill = 255)
+        # draw.text(
+        #     (3,
+        #     vSpan - 20), 
+        #   " | ".join(lines), 
+        #   # "DAY", 
+        #   font = ImageFont.truetype(curr_dir + 'font.ttc', 16), 
+        #   fill = 255)
 
-      drawRed.text(((dayCount % 7) * hSpan + 3, vSpan + vSpan * math.floor(dayCount / 7)), str(drawDay.day), font = font, fill = (0 if not drawDay.day == today.day else 255), align = "left")
+      drawRed.text(((dayCount % 7) * hSpan + 3, vSpan * math.floor(dayCount / 7)), str(drawDay.day), font = font, fill = (0 if not drawDay.day == today.day else 255), align = "left")
 
     else:
       draw.rectangle((
         (dayCount % 7) * hSpan + 1, 
-        math.floor(dayCount / 7) * vSpan + vSpan + 1, 
+        math.floor(dayCount / 7) * vSpan + 1, 
         (dayCount % 7) * hSpan + hSpan - 1, 
-        math.floor(dayCount / 7) * vSpan + vSpan + vSpan - 1), 
+        math.floor(dayCount / 7) * vSpan + vSpan - 1), 
         fill = 255,
         outline = 255) 
 
-      draw.text(((dayCount % 7) * hSpan + 3, vSpan + vSpan * math.floor(dayCount / 7)), str(drawDay.day), font = font, fill = 0, align = "left")
+      draw.text(((dayCount % 7) * hSpan + 3, vSpan * math.floor(dayCount / 7)), str(drawDay.day), font = font, fill = 0, align = "left")
 
       for l in range(0, len(lines)):
-        draw.text(((dayCount % 7) * hSpan + 3, vSpan + vSpan * math.floor(dayCount / 7) + 20 + l * 10), lines[l], font = fontTiny, fill = 0, align = "left")
+        draw.text(((dayCount % 7) * hSpan + 3, vSpan * math.floor(dayCount / 7) + 20 + l * 10), lines[l], font = fontTiny, fill = 0, align = "left")
 
 
   # draw.text((10, screenHeight / 2 + 5), "chao", font = font, fill = 255)

@@ -51,7 +51,7 @@ def main(tokenFile, credentialsFile):
     # now = (today + timedelta(days = -50)).isoformat() + 'Z' # 'Z' indicates UTC time
     now = (today + timedelta(days = -50)).isoformat() + 'Z' # 'Z' indicates UTC time
     print('Getting the upcoming 10 events')
-    events_result = service.events().list(calendarId='primary', timeMin=now,
+    events_result = service.events().list(calendarId='ad3themvjfocc3rsuq0adulpl8@group.calendar.google.com', timeMin=now,
                                         maxResults=100, singleEvents=True,
                                         orderBy='startTime').execute()
     events = events_result.get('items', [])
