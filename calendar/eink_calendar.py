@@ -116,7 +116,7 @@ def refreshScreen():
   # Drawing on the Vertical image
   # Limage = Image.new('1', (epdModule.EPD_WIDTH, epdModule.EPD_HEIGHT), 255)  # 255: clear the frame
   screenWidth = epdModule.EPD_WIDTH
-  screenHeight = epdModule.EPD_HEIGHT
+  screenHeight = epdModule.EPD_HEIGHT -1
 
   print(sys.argv)
 
@@ -125,8 +125,8 @@ def refreshScreen():
   drawRed = ImageDraw.Draw(HimageRed)
   # # Font: https://github.com/byrongibson/fonts/blob/master/truetype/wqy/wqy-microhei.ttc
 
-  font = ImageFont.truetype(curr_dir + 'font.ttc', 18)
-  fontSmall = ImageFont.truetype(curr_dir + 'font.ttc', 14)
+  font = ImageFont.truetype(curr_dir + 'font.ttc', 20)
+  fontSmall = ImageFont.truetype(curr_dir + 'font.ttc', 16)
   fontTiny = ImageFont.truetype(curr_dir + 'font.ttc', 11)
   # fontBig = ImageFont.truetype('font.ttc', 30)
   # fontMed = ImageFont.truetype('font.ttc', 20)
@@ -253,6 +253,7 @@ def refreshScreen():
   #   outline = 0) 
 
   # drawRed.text((5,-1), today.strftime("%A, %d %B %Y"), font = ImageFont.truetype(curr_dir + 'font.ttc', 40), fill = 255, align = "left")
+  shown_months = []
 
   for dayCount in range(0, 7 * showWeeks):
     drawDay = today + timedelta(days = (+ dayCount - (today.day + firstDayOfMonth.weekday() + 1)))
@@ -276,6 +277,9 @@ def refreshScreen():
     #     # "DAY", 
     #     font = ImageFont.truetype(curr_dir + 'font.ttc', 16), 
     #     fill = 0)
+
+    # drawRed.text(((dayCount % 7) * hSpan + 3 + 10, vSpan * math.floor(dayCount / 7)), str(drawDay.month), font = font, fill = (0 if not drawDay.day == today.day else 255), align = "left")
+
 
     if drawDay.month == today.month: 
       draw.rectangle((
@@ -321,18 +325,27 @@ def refreshScreen():
         #   font = ImageFont.truetype(curr_dir + 'font.ttc', 16), 
         #   fill = 255)
 
-      drawRed.text(((dayCount % 7) * hSpan + 3, vSpan * math.floor(dayCount / 7)), str(drawDay.day), font = font, fill = (0 if not drawDay.day == today.day else 255), align = "left")
+      label = str(drawDay.day)
+      if(drawDay.day == 1 or drawDay.day == today.day):
+        label = str(drawDay.day) + "º " + calendar.month_name[drawDay.month]
 
+      drawRed.text(((dayCount % 7) * hSpan + 3, vSpan * math.floor(dayCount / 7)), label, font = font, fill = (0 if not drawDay.day == today.day else 255), align = "left")
+      shown_months.append(drawDay.month)
     else:
       draw.rectangle((
-        (dayCount % 7) * hSpan + 1, 
-        math.floor(dayCount / 7) * vSpan + 1, 
-        (dayCount % 7) * hSpan + hSpan - 1, 
-        math.floor(dayCount / 7) * vSpan + vSpan - 1), 
+        (dayCount % 7) * hSpan, 
+        math.floor(dayCount / 7) * vSpan, 
+        (dayCount % 7) * hSpan + hSpan, 
+        math.floor(dayCount / 7) * vSpan + vSpan), 
         fill = 255,
-        outline = 255) 
+        outline = 0) 
 
-      draw.text(((dayCount % 7) * hSpan + 3, vSpan * math.floor(dayCount / 7)), str(drawDay.day), font = font, fill = 0, align = "left")
+      label = str(drawDay.day)
+      if(drawDay.day == 1):
+        label = str(drawDay.day) + "º " + calendar.month_name[drawDay.month]
+
+      draw.text(((dayCount % 7) * hSpan + 3, vSpan * math.floor(dayCount / 7)), label, font = font, fill = 0, align = "left")
+      shown_months.append(drawDay.month)
 
       for l in range(0, len(lines)):
         draw.text(((dayCount % 7) * hSpan + 3, vSpan * math.floor(dayCount / 7) + 20 + l * 10), lines[l], font = fontTiny, fill = 0, align = "left")
